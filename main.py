@@ -92,12 +92,14 @@ def show_person(
         min_length=1, 
         max_length=50,
         title="Person name",
-        description="This is the person name. It's between 1 and 50 characters"
+        description="This is the person name. It's between 1 and 50 characters",
+        example = "Guillermina"
         ),
     age : Optional[str] = Query(
         ...,
         title="Person age",
-        description="This is the person age. It's required"
+        description="This is the person age. It's required",
+        example = 6
         )
 ):
     return {name:age}    
@@ -109,7 +111,8 @@ def show_person(
         ..., 
         gt=0,
         title="Person id",
-        description="This is the person id. It's grater than zero"
+        description="This is the person id. It's grater than zero",
+        example = 8
         )
 ):
     return {person_id : "it exists!"}
@@ -121,7 +124,8 @@ def update_person(
         ..., 
         gt=0,
         title="Person id",
-        description="This is the person id. It's grater than zero"
+        description="This is the person id. It's grater than zero",
+        example = 8
         ),
     person: Person = Body(
         ...
