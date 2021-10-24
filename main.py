@@ -3,7 +3,7 @@ from typing import Optional
 from enum import Enum
 
 # Pydantic
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr, PaymentCardNumber, HttpUrl
 
 # FastAPI
 from fastapi import FastAPI
@@ -20,9 +20,24 @@ class HairColor(Enum):
     red = "red"
 
 class Location(BaseModel):
-    city : str
-    state : str
-    country : str
+    city : str = Field(
+        ...,
+        min_length = 1,
+        max_length = 50,
+        example = "Solis de Mataojo"
+        )
+    state : str = Field(
+        ...,
+        min_length = 1,
+        max_length = 50,
+        example = "Lavalleja"
+        )
+    country : str = Field(
+        ...,
+        min_length = 1,
+        max_length = 50,
+        example = "Uruguay"
+        )
 
 class Person(BaseModel):
     first_name : str = Field(
@@ -42,7 +57,23 @@ class Person(BaseModel):
         )
     hair_color : Optional[HairColor] = Field(default=None)
     is_married : Optional[bool] = Field(default=None)
+    email : EmailStr
+    credit_card : Optional[PaymentCardNumber]
+    personal_blog : Optional[HttpUrl]
 
+    # Clase para crear datos de ejemplo
+    # class Config():
+    #     schema_extra = {
+    #         "example": {
+    #             "first_name" : "Fabricio",
+    #             "last_name" : "González",
+    #             "age" : 35,
+    #             "hair_color" : "brown",
+    #             "is_married" : True,
+    #             "email" : "fabricio@gmail.com",
+    #             "personal_blog" : "https://www.fabricio.com"
+    #         }
+    #     }
 
 @app.get("/")
 def home():
@@ -95,10 +126,11 @@ def update_person(
     person: Person = Body(
         ...
         ),
-    location: Location = Body(
-        ...
-        )
+    #location: Location = Body(
+    #    ...
+    #    )
 ):
-    results = person.dict()
-    results.update(location.dict())
-    return results
+    #results = person.dict()
+    #results.update(location.dict())
+    #return results
+    return person
